@@ -8,8 +8,9 @@ import numpy.polynomial.polynomial as nppoly
 import math as mt
 import xlrd
 import random as rnd
+import os
 
-def PGA(outputpath, spec):
+def PGA(outputpath, inputpath,  spec):
 
     peakaccel = np.amax(spec[3:,:], axis=0)
 
@@ -28,37 +29,37 @@ def PGA(outputpath, spec):
     ax.yaxis.set_label_text('PGA(mg)', size=18, family='freeserif',
                              color='#000099')
 
-    mr = np.genfromtxt('/home/babak/PycharmProjects/generalwithinterface/GeneralInversion/Inputs/m-r.csv', delimiter=',')
-    fs = 0
-    fr = 1
-    fn = 0
-    fu = 0
-    sbb = 0
-    scc = 1
-    sdd = 0
-    e1 = 2.88
-    b1 = 0.554
-    b2 = 0.103
-    b3 = 0.244
-    c1 = -0.96
-    fss = -0.03
-    ftf = -0.039
-    sb = 0.027
-    sc = 0.01
-    sd = -0.017
-    tor = 0.094
-    fi = 0.283
-    sig = 0.298
-    for i in range(np.shape(mr)[1]):
-        if mr[2, i] <= 5:
-            fm = (b1 * (mr[2, i] - 5)) + (b2 * ((mr[2, i] - 5) ** 2))
-        else:
-            fm = b3 * (mr[2, i] - 5)
-        gmpepga = 10 ** (e1 + (c1 * np.log(mr[3, i])) + fm + sbb * sb + scc * sc + sdd * sd + fss * fs + ftf * fr)
-        print gmpepga
-        mr[1, i] = gmpepga
-    ax.scatter(spec[2,:], mr[1, :], s=100,
-               color='red', edgecolor='black', alpha=0.5, zorder=3)
+    if os.path.exists(inputpath + '/m-r.csv'):
+        mr = np.genfromtxt(inputpath + '/m-r.csv', delimiter=',')
+        fs = 0
+        fr = 1
+        fn = 0
+        fu = 0
+        sbb = 0
+        scc = 1
+        sdd = 0
+        e1 = 2.88
+        b1 = 0.554
+        b2 = 0.103
+        b3 = 0.244
+        c1 = -0.96
+        fss = -0.03
+        ftf = -0.039
+        sb = 0.027
+        sc = 0.01
+        sd = -0.017
+        tor = 0.094
+        fi = 0.283
+        sig = 0.298
+        for i in range(np.shape(mr)[1]):
+            if mr[2, i] <= 5:
+                fm = (b1 * (mr[2, i] - 5)) + (b2 * ((mr[2, i] - 5) ** 2))
+            else:
+                fm = b3 * (mr[2, i] - 5)
+            gmpepga = 10 ** (e1 + (c1 * np.log(mr[3, i])) + fm + sbb * sb + scc * sc + sdd * sd + fss * fs + ftf * fr)
+            mr[1, i] = gmpepga
+        ax.scatter(spec[2,:], mr[1, :], s=100,
+                   color='red', edgecolor='black', alpha=0.5, zorder=3)
     fig.savefig(outputpath + 'Source-effects/Extra-plots/'
                    + 'PGA' + '.pdf', format='pdf', dpi=200)
     plt.close(fig)

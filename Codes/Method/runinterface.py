@@ -49,7 +49,7 @@ class EffectsCalculationThread(QThread):
 
         if self.variables[12]:
             self.signalemit('PGA figure is calculating', True)
-            effectscalculations.PGA(self.variables[10], self.spec)
+            effectscalculations.PGA(self.variables[10], self.variables[9], self.spec)
 
             self.signalemit('PGA figure is saved', False)
 
