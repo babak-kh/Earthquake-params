@@ -1,0 +1,11 @@
+*.pdf
+*.xls
+*.xlsx
+*.csv
+*.txt
+*.pyc
+*.txt~
+*.csv~
+*.xls~
+*.xlsx~
+*.pdf~
