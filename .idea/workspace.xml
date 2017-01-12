@@ -1,38 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="4f5de989-d053-41f6-96d9-b2ecf40896b3" name="Default" comment="Working codes">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Inputs/w2.xls" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/Earthquake-parameters.iml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/encodings.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/modules.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/vcs.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Codes/Method/GeneralizedInversion.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Codes/Method/GeometricalSpreading.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Codes/Method/HtoV.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Codes/Method/Inputdata.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Codes/Method/Qcomparison.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Codes/Method/Qstd.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Codes/Method/TheSoftware.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Codes/Method/__init__.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Codes/Method/betterplots.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Codes/Method/effectscalculations.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Codes/Method/interfacetest.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Codes/Method/interpolating.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Codes/Method/plot.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Codes/Method/rocksiteamplification.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Codes/Method/runinterface.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Codes/Method/tests.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Codes/__init__.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Codes/pyqttraining.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Inputs/earth.csv" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Inputs/ratio.csv" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Inputs/spectrums.csv" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Inputs/stations final.csv" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Inputs/w2.csv" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/__init__.py" />
-    </list>
+    <list default="true" id="4f5de989-d053-41f6-96d9-b2ecf40896b3" name="Default" comment="Working codes" />
     <ignored path="Earthquake-parameters.iws" />
     <ignored path=".idea/workspace.xml" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
