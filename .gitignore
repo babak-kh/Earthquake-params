@@ -10,3 +10,4 @@
 *.xlsx~
 *.pdf~
 .idea/
+.xml

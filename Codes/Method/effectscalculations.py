@@ -283,7 +283,7 @@ def sourceextraction(inputpath, outputpath, eqcount, bs=3.5, ps=2.8, n=20):
     np.savetxt(outputpath + 'Source-effects/efromsvd.txt',
                efromsvd, fmt='%0.5f', delimiter=',')
     np.savetxt(outputpath + 'Source-effects/momentrates.txt',
-               momentrate, fmt='%0.5e', delimiter=',')
+               momentrate, fmt='%0.20e', delimiter=',')
     np.savetxt(outputpath + 'Source-effects/magnitudesextracted.txt',
                moment, fmt='%0.5f', delimiter=',')
     np.savetxt(outputpath + 'Source-effects/momentratespstd.txt',
@@ -360,12 +360,9 @@ def gridsearch(inputpath, outputpath, sigma, gamma, magnitude, bs=3.5, n=20, ps=
     #print magnitudessamples
 # ------------------------- Grid search process ---------------------------
     fc = 0
-    f = open(outputpath +
-             'Source-effects/grid-search/sigmagammacomparisons.txt', 'w')
     gg = open(outputpath +
               'Source-effects/grid-search/Comparison-for-each-frequency.txt', 'w')
     for z in range(len(magnitudes)):
-        difference = 100000000000
         print >> gg, '\n\n For earthquake number %d and %0.2fM magnitude :  /\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/' \
                      % (z + 1, magnitudes[z])
         bestanswer[z, 0] = 10000000.0
@@ -393,8 +390,6 @@ def gridsearch(inputpath, outputpath, sigma, gamma, magnitude, bs=3.5, n=20, ps=
                      'gamma = %0.2f, Sigma = %0.2f, magnitude = %0.2f, moment = %0.2e, fc=%0.2f Difference = %0.12f   -\n' \
                      % (bestanswereachfreq[i, 0], bestanswereachfreq[i, 2], bestanswereachfreq[i, 3],
                         bestanswereachfreq[i, 4], bestanswereachfreq[i, 5], fc, bestanswereachfreq[i, 1])
-                    # print np.shape(bestanswereachfreq)
-                    # print np.hstack((bestanswereachfreq, bestanswer))
         forplot[z, 0] = (2.34 * bs) / (2 * np.pi * fcc)    # Radius
         forplot[z, 1] = fcc  #corner frequency
         forplot[z, 2] = swaveenergy[z]
@@ -404,7 +399,6 @@ def gridsearch(inputpath, outputpath, sigma, gamma, magnitude, bs=3.5, n=20, ps=
                               bestanswer[z, 0], bestanswer[z, 1], bestanswer[z, 2], bestanswer[z, 3],
                               magnitudes[z], fcc, forplot[z,0], bestanswer[z, 4])
 
-    f.close()
     gg.close()
     textheader = "Earthquake date, Difference, Dgamma, Dsigma,New magnitude, Old magnitude, fc, radius, New momentrate"
     np.savetxt(outputpath +

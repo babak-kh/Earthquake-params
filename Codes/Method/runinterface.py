@@ -60,7 +60,7 @@ class EffectsCalculationThread(QThread):
             self.g, self.datamatrix, self.eqcount, self.stcount, log = ginversion.gmatrix(self.freqs, self.spec, self.rat
                                                                            , self.variables[10], self.variables[6],
                                                                            referenceamplification,
-                                                                           self.variables[1], self.variables[4],
+                                                                           self.variables[0], self.variables[4],
                                                                            self.variables[7])
 
             self.signalemit('Matrixes are done constructing.', True)
@@ -95,7 +95,7 @@ class EffectsCalculationThread(QThread):
             self.signalemit('Grid-search method is running using predefined range for parameters', True)
             sigma = (1, 600, 600)   # (Start, End, Number of samples)
             gamma = (2.0, 2.0, 1)    # (Start, End, Number of samples)
-            magnitudes = (0.5, 40)   # (Magnitude increase limit, Step)
+            magnitudes = (0.5, 30)   # (Magnitude increase limit, Step)
             effectscalculations.gridsearch(self.variables[9], self.variables[10], sigma,
                                            gamma, magnitudes, self.variables[4],
                                            self.variables[7], self.variables[5], self.variables[8])

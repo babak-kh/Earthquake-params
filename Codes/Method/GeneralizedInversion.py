@@ -34,7 +34,6 @@ class MatrixNSVD():
 
     def gmatrix(self,freqs, spec, rat, outputpath, rf, referenceamplification, k0=0.0451, bs=3.5, n=20, f1=0.4, f2=15):
 
-
         if not(np.allclose(spec[:3, :], rat[:3, :])):
             print "WARNING : First Three rows of spectrum and ratio files are not the same, \n" \
                   "the program is continuing using spectrum first three rows."
@@ -43,7 +42,7 @@ class MatrixNSVD():
         eqcount = np.max(first3rows[0, :])
         stationscount = np.max(first3rows[1, :])
 
-        zr = GeometricalSpreading.geometrical(first3rows[2, :])
+        zr = np.around(GeometricalSpreading.geometrical(first3rows[2, :]), decimals=4)
         np.savetxt(outputpath + 'Geometrical-spreading/geometrical spreading.txt', np.log(zr),
                     fmt='%0.4f', delimiter=',')
         spectrumshape = np.shape(spec)
@@ -78,7 +77,6 @@ class MatrixNSVD():
                 g[counter+j, j] = (spec[2, i] * np.pi * freqs[j] * -sigma) / bs  # Path elements
                 g[counter+j, n*(eqnumber-1)+j+n] = sigma  # source elements
                 g[counter+j, (eqcount*n)+((stnumber-1)*n)+j+n] = sigma  # site elements
-
                 datamatrix[counter+j, 0] = ((np.log(spec[3+j, i]) + (np.pi * k0 * freqs[j]) - np.log(zr[i]))*sigma)
                 if (i == lengggth - 1) and check:
                     check = False
@@ -98,7 +96,7 @@ class MatrixNSVD():
                                                           np.shape(g)[0], np.shape(g)[1])
         np.savetxt(outputpath + 'matrices/gmatrix.txt', g,  fmt='%.4e',
                    delimiter=',')
-        np.savetxt(outputpath + 'matrices/datamatrix.txt', datamatrix,  fmt='%.4e',
+        np.savetxt(outputpath + 'matrices/datamatrix.txt', datamatrix,  fmt='%.4f',
                    delimiter=',')
         with open(outputpath + 'matrices/G-Test.txt', "w") as text_file:
             text_file.write(string)
