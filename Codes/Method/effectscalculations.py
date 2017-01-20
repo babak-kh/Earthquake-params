@@ -347,9 +347,7 @@ def gridsearch(inputpath, outputpath, sigma, gamma, magnitude, bs=3.5, n=20, ps=
     bestanswer = np.zeros([len(magnitudes), 5], dtype=float)
     bestanswer2 = np.zeros([len(magnitudes), 5], dtype=float)
     forplot = np.zeros([len(magnitudes), 4], dtype=float)
-    momentrateaverage = np.zeros(len(magnitudes))
     momentrateaverage = np.mean(momentrates, axis=0)  # Average of moment rate in each record
-    swaveenergy = np.zeros(len(magnitudes))
     energyconstant = ((15 * np.pi * 1000 * ps * ((alphas * 1000) ** 5)) ** (-1)) + ((15 * np.pi * ps * 1000 *((bs *1000) ** 5)) ** (-1)) # Constant for S-wave ebergy calculation
     swaveenergy = energyconstant * np.asarray([np.average([(2 * np.pi * freqs[i] * momentrates[i, z]) ** 2 for i in range(n)])
                                      for z in range(len(magnitudes))])  # S-wave energy calculations
@@ -398,6 +396,7 @@ def gridsearch(inputpath, outputpath, sigma, gamma, magnitude, bs=3.5, n=20, ps=
                               str(int(earthquakes[z, 2])) + '/' + str(int(earthquakes[z, 3])),
                               bestanswer[z, 0], bestanswer[z, 1], bestanswer[z, 2], bestanswer[z, 3],
                               magnitudes[z], fcc, forplot[z,0], bestanswer[z, 4])
+
 
     gg.close()
     textheader = "Earthquake date, Difference, Dgamma, Dsigma,New magnitude, Old magnitude, fc, radius, New momentrate"
@@ -480,8 +479,8 @@ def extrasourceplots(inputpath, outputpath, eqcount, stcount, n=20, ps=2.8, bs=3
                                'Source-effects/magnitudesextracted.txt', delimiter=',')
     momentratecalculated = np.zeros([n, eqcount])
 
-    momentrateaverage = np.zeros(len(magnitudes))
-    momentrateaverage = np.mean(momentrates, axis=0)  # Average of moment rate in each record
+    momentnstdfc= np.zeros(len(magnitudes))
+    momentpstdfc = np.zeros(len(magnitudes))
     momentscalculatedfromgrid = 10 ** (1.5 * (gridresults[:, 4] + 10.7))
 
     swaveenergy = np.zeros([n, len(magnitudes)])
@@ -549,19 +548,43 @@ def extrasourceplots(inputpath, outputpath, eqcount, stcount, n=20, ps=2.8, bs=3
 
 
 # ------------------------- Moment - fc ---------------------------------
-
     fig = plt.figure(224)
     ax = fig.add_subplot(111)
     ax.scatter(fc, momentscalculatedfromgrid, s=100,
                color='deepskyblue', edgecolor='black', alpha=0.5, zorder=3,)
+    for p in range(int(eqcount)):
+        # ax.scatter(fc[p], np.mean(momentratenstd[:, p] * (1 + (freqs/fc[p]) ** 2)) , s=100,
+        #            color='green', edgecolor='black', alpha=0.5, zorder=3,)
+        # ax.scatter(fc[p], np.mean(momentratepstd[:, p] * (1 + (freqs/fc[p]) ** 2)) , s=100,
+        #            color='red', edgecolor='black', alpha=0.5, zorder=3,)
+        momentnstdfc[p] = np.mean(momentratenstd[:, p] * (1 + (freqs/fc[p]) ** 2))
+        momentpstdfc[p] = np.mean(momentratepstd[:, p] * (1 + (freqs/fc[p]) ** 2))
     ax.xaxis.grid(which='both', ls='-', lw=0.3, color='#c0c0c0', alpha=0.1, zorder=0)
     ax.yaxis.grid(which='both', ls='-', lw=0.3, color='#c0c0c0', alpha=0.1, zorder=1)
     fit = nppoly.polyfit(np.log(fc), (np.log(momentscalculatedfromgrid) + 3 * np.log(fc)), 0)
+    fitnstd = nppoly.polyfit(np.log(fc), (np.log(momentnstdfc) + 3 * np.log(fc)), 0)
+    fitpstd = nppoly.polyfit(np.log(fc), (np.log(momentpstdfc) + 3 * np.log(fc)), 0)
     ax.loglog(fc, np.exp(-3 * np.log(fc) + fit),
                alpha=0.5, color='#994c00', linewidth=2,
                label='Fitted line', zorder=3)
+    ax.loglog(fc, np.exp(-3 * np.log(fc) + fitnstd),
+               alpha=0.5, color='red', linewidth=2,
+               label='Fitted line', zorder=3)
+    regionaldsigmanstd = np.exp(fitnstd)/(4.9 * 10 ** 6 * bs) ** 3
+    ax.annotate(r'$\delta \sigma = %0.2f$ bar' % regionaldsigmanstd, xy=(np.sort(fc)[int((2.0/3)*eqcount)],
+                np.exp(-3 * np.log(np.sort(fc)[int((2.0/3)*eqcount)]) + fitpstd)),
+                xytext=(np.sort(fc)[-1], np.exp(-3 * np.log(np.sort(fc)[int((2.0/3)*eqcount)]) + fitpstd) * 2)
+                , arrowprops=dict(facecolor='lightgreen', shrink=0.1, edgecolor='black', width=2))
 
-    regionaldsigma = np.exp(fit)/(4.9 * 10 ** 6 * bs) ** 3
+    ax.loglog(fc, np.exp(-3 * np.log(fc) + fitpstd),
+               alpha=0.5, color='red', linewidth=2,
+               label='Fitted line', zorder=3)
+    regionaldsigmapstd = np.exp(fitpstd)/(4.9 * 10 ** 6 * bs) ** 3
+    ax.annotate(r'$\delta \sigma = %0.2f$ bar' % regionaldsigmapstd, xy=(np.sort(fc)[1],
+                np.exp(-3 * np.log(np.sort(fc)[1]) + fitnstd)),
+                xytext=(0.15, np.exp(-3 * np.log(np.sort(fc)[1]) + fitnstd) / 10)
+                , arrowprops=dict(facecolor='lightgreen', shrink=0.05, edgecolor='black', width=2 ))
+    regionaldsigma = np.exp(fit)/(4.9 * 10 ** 6 * bs)  ** 3
     fig.suptitle(r'$\delta \sigma = %0.2f$ bar' % regionaldsigma)
     ax.xaxis.set_label_text('Corner Frequecy (Hz)', size=18, family='freeserif', color='#000099')
     ax.yaxis.set_label_text('Seismic moment (dyne.Cm)', size=18, family='freeserif',

@@ -9,4 +9,5 @@
 *.xls~
 *.xlsx~
 *.pdf~
-.xml
+*.xml
+.idea/
